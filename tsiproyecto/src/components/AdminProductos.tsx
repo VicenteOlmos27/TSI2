@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { getProductos } from "../services/AllProductos";
-import { deleteProducto } from "../services/BorrarProductos";
-import { useNavigate } from "react-router-dom";
+import { getProductos } from "../services/AllProductos"; // función que obtiene productos desde el backend
+import { deleteProducto } from "../services/BorrarProductos"; // función que elimina un producto
+import { useNavigate } from "react-router-dom"; // para redireccionar al editar
 
+// Interfaz para tipar los productos
 interface Producto {
   codProducto: string;
   nombre: string;
@@ -12,10 +13,14 @@ interface Producto {
 }
 
 export default function VistaProductosAdmin() {
+  // Estado para almacenar los productos
   const [productos, setProductos] = useState<Producto[]>([]);
+
+  // Estado para errores y mensajes
   const [error, setError] = useState("");
   const [mensaje, setMensaje] = useState("");
 
+  // Función que carga los productos desde el backend
   const cargarProductos = async () => {
     try {
       const data = await getProductos();
@@ -26,6 +31,7 @@ export default function VistaProductosAdmin() {
     }
   };
 
+  // Función que elimina un producto
   const handleEliminar = async (codProducto: string) => {
     const confirmar = window.confirm(`¿Eliminar el producto ${codProducto}?`);
     if (!confirmar) return;
@@ -33,31 +39,33 @@ export default function VistaProductosAdmin() {
     try {
       await deleteProducto(codProducto);
       setMensaje("Producto eliminado correctamente");
-      cargarProductos();
+      cargarProductos(); // recarga la lista
     } catch (err: any) {
       setError(err.message || "Error al eliminar producto");
     }
   };
 
-  
-const navigate = useNavigate();
+  // Hook para redireccionar al formulario de edición
+  const navigate = useNavigate();
+  const handleEditar = (codProducto: string) => {
+    navigate(`/admin/productos/editar/${codProducto}`);
+  };
 
-const handleEditar = (codProducto: string) => {
-  navigate(`/admin/productos/editar/${codProducto}`);
-};
-  
+  // Carga los productos al montar el componente
   useEffect(() => {
     cargarProductos();
   }, []);
 
   return (
     <div className="container py-5">
-      <h2 className="mb-4">Listado de Productos</h2>
+      <h2 className="mb-4 text-center text-primary">Listado de Productos</h2>
 
+      {/* Mensajes de error o éxito */}
       {error && <div className="alert alert-danger">{error}</div>}
       {mensaje && <div className="alert alert-success">{mensaje}</div>}
 
-      <table className="table table-bordered table-hover">
+      {/* Tabla de productos */}
+      <table className="table table-bordered table-hover shadow-sm">
         <thead className="table-dark">
           <tr>
             <th>Código</th>
@@ -81,7 +89,12 @@ const handleEditar = (codProducto: string) => {
               <td>{producto.stock ?? "—"}</td>
               <td>{producto.codCategoria || "—"}</td>
               <td>
-                <button className="btn btn-sm btn-warning me-2" onClick={() => handleEditar(producto.codProducto)}>Editar</button>
+                <button
+                  className="btn btn-sm btn-warning me-2"
+                  onClick={() => handleEditar(producto.codProducto)}
+                >
+                  Editar
+                </button>
                 <button
                   className="btn btn-sm btn-danger"
                   onClick={() => handleEliminar(producto.codProducto)}

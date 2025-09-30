@@ -34,11 +34,9 @@ export default function NavbarAmin() {
                 </a>
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="productosDropdown">
                   <li>
-                    <Link className="dropdown-item" to="/productos/crear">Crear</Link>
+                    <Link className="dropdown-item" to="productos/crear">Crear</Link>
                   </li>
-                  <li>
-                    <Link className="dropdown-item" to="/productos/eliminar">Eliminar</Link>
-                  </li>
+                 
                 </ul>
               </li>
             </ul>

@@ -9,6 +9,7 @@ import NavbarAmin from "./layouts/LayoutAdmin";
 import VistaAdmin from "./components/VistaAdmin";
 import VistaProductosAdmin from "./components/AdminProductos";
 import FormEditarProducto from "./components/FormEditarProductos";
+import CrearProducto from "./components/CrearProducto";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
       {
         path: "productos/editar/:codProducto",
         element: <FormEditarProducto />,
+      },
+      {
+        path:"productos/crear",
+        element:<CrearProducto/>,
       }
     ],
   },
