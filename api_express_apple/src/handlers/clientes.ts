@@ -42,6 +42,8 @@ export const crearCliente = async (request: Request, response: Response) => {
       .json({ error: "Rut y Contraseña son obligatorios" });
   }
 
+  
+
   try {
     const existe = await Cliente.findByPk(codUsuario);
     if (existe) {

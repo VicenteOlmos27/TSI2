@@ -16,6 +16,12 @@ export default function Registro() {
     e.preventDefault();
     setError("");
 
+    const rutRegex = /^\d{7,8}-[0-9kK]$/;
+    if (!rutRegex.test(codUsuario)) {
+      setError("El RUT debe tener el formato 12345678-9");
+      return;
+    }
+
     try {
       await crearCliente({
         codUsuario,

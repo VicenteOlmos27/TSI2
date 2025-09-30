@@ -35,12 +35,6 @@ const CrearProducto = () => {
     if (!form.codCategoria.trim()) nuevosErrores.codCategoria = "El código de categoría es obligatorio";
     if (form.precioUnitario < 0) nuevosErrores.precioUnitario = "El precio no puede ser negativo";
     if (form.stock < 0) nuevosErrores.stock = "El stock no puede ser negativo";
-    if (
-      form.imagen &&
-      !/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)?$/i.test(form.imagen)
-    ) {
-      nuevosErrores.imagen = "La URL de imagen no es válida, ej: https://PUM.com/imagen.jpg";
-    }
 
     return nuevosErrores;
   };
@@ -138,15 +132,14 @@ const CrearProducto = () => {
 
         {/* Imagen */}
         <div className="mb-3">
-          <label className="form-label">Imagen (URL)</label>
+          <label className="form-label">Imagen (nombre de archivo)</label>
           <input
             type="text"
-            className={`form-control ${errores.imagen ? "is-invalid" : ""}`}
+            className="form-control"
             name="imagen"
             value={form.imagen}
             onChange={handleChange}
           />
-          {errores.imagen && <div className="invalid-feedback">{errores.imagen}</div>}
         </div>
 
         {/* Código de Categoría */}
