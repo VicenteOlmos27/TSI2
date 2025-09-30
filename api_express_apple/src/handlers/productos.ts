@@ -33,7 +33,6 @@ export const agregarProductos = async (request: Request, response: Response) => 
   try {
     const { nombre, descripcion, precioUnitario, stock, imagen, codCategoria } = request.body;
 
-    // Validación básica
     if (!nombre || !codCategoria) {
       return response.status(400).json({ error: "El nombre y codCategoria son obligatorios" });
     }
@@ -42,47 +41,42 @@ export const agregarProductos = async (request: Request, response: Response) => 
       return response.status(400).json({ error: "El precio y el stock no pueden ser negativos" });
     }
 
-    
-// Buscar el último producto con código válido
-const ultimoProducto = await Producto.findOne({
-  where: {
-    codProducto: {
-      [Op.like]: "PROD%",
-    },
-  },
-  order: [["codProducto", "DESC"]],
-});
+    // Definir prefijos por categoría
+    const prefijos: Record<string, string> = {
+      CAT01: "MAC",
+      CAT02: "IPA",
+      CAT03: "IPH",
+      CAT04: "ACC",
+    };
 
-// Generar nuevo código
-let nuevoCodigo = "PROD01";
-if (ultimoProducto && typeof ultimoProducto.codProducto === "string") {
-  const match = ultimoProducto.codProducto.match(/^PROD(\d+)$/);
-  if (match) {
-    const codigoNum = parseInt(match[1]);
-    const nuevoNum = codigoNum + 1;
-    nuevoCodigo = "PROD" + nuevoNum.toString().padStart(2, "0");
-  } else {
-    // Si el formato no es válido, buscar el número más alto manualmente
-    const productos = await Producto.findAll({
+    const prefijo = prefijos[codCategoria];
+    if (!prefijo) {
+      return response.status(400).json({ error: "Categoría no válida" });
+    }
+
+    // Buscar el último producto con ese prefijo
+    const ultimoProducto = await Producto.findOne({
       where: {
         codProducto: {
-          [Op.like]: "PROD%",
+          [Op.like]: `${prefijo}%`,
         },
       },
+      order: [["codProducto", "DESC"]],
     });
 
-    const numeros = productos
-      .map(p => parseInt(p.codProducto.replace("PROD", "")))
-      .filter(n => !isNaN(n));
-
-    const maxNum = Math.max(...numeros, 0);
-    nuevoCodigo = "PROD" + (maxNum + 1).toString().padStart(2, "0");
-  }
-}
-
+    // Generar nuevo código
+    let nuevoCodigo = `${prefijo}01`;
+    if (ultimoProducto && typeof ultimoProducto.codProducto === "string") {
+      const match = ultimoProducto.codProducto.match(new RegExp(`^${prefijo}(\\d+)$`));
+      if (match) {
+        const codigoNum = parseInt(match[1]);
+        const nuevoNum = codigoNum + 1;
+        nuevoCodigo = `${prefijo}${nuevoNum.toString().padStart(2, "0")}`;
+      }
+    }
 
     // Crear el producto
-    const productoNuevo = await Producto.create({
+    const nuevoProducto = await Producto.create({
       codProducto: nuevoCodigo,
       nombre,
       descripcion,
@@ -92,14 +86,10 @@ if (ultimoProducto && typeof ultimoProducto.codProducto === "string") {
       codCategoria,
     });
 
-    response.status(201).json({ data: productoNuevo });
-  } catch (error: any) {
-    console.error("Error al crear producto:", error);
-    response.status(500).json({
-      error: "Error al crear producto",
-      detalle: error.message,
-      errores: error.errors || null,
-    });
+    return response.status(201).json(nuevoProducto);
+  } catch (error) {
+    console.error(error);
+    return response.status(500).json({ error: "Error al agregar el producto" });
   }
 };
 

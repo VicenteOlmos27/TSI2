@@ -152,14 +152,21 @@ const CrearProducto = () => {
         {/* Código de Categoría */}
         <div className="mb-3">
           <label className="form-label">Código de Categoría</label>
-          <input
-            type="text"
-            className={`form-control ${errores.codCategoria ? "is-invalid" : ""}`}
+          <select
+            className={`form-select ${errores.codCategoria ? "is-invalid" : ""}`}
             name="codCategoria"
             value={form.codCategoria}
             onChange={handleChange}
-          />
-          {errores.codCategoria && <div className="invalid-feedback">{errores.codCategoria}</div>}
+          >
+            <option value="">Selecciona una categoría</option>
+            <option value="CAT01">CAT01 - Mac</option>
+            <option value="CAT02">CAT02 - iPad</option>
+            <option value="CAT03">CAT03 - iPhone</option>
+            <option value="CAT04">CAT04 - Accesorios</option>
+          </select>
+          {errores.codCategoria && (
+            <div className="invalid-feedback">{errores.codCategoria}</div>
+          )}
         </div>
 
         {/* Botón de envío */}
