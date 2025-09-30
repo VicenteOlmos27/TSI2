@@ -39,7 +39,7 @@ const CrearProducto = () => {
       form.imagen &&
       !/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)?$/i.test(form.imagen)
     ) {
-      nuevosErrores.imagen = "La URL de imagen no es válida";
+      nuevosErrores.imagen = "La URL de imagen no es válida, ej: https://PUM.com/imagen.jpg";
     }
 
     return nuevosErrores;

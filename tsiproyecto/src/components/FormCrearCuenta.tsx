@@ -34,6 +34,7 @@ export default function Registro() {
       }
     }
   };
+  
 
   return (
     <div className="container mt-5" style={{ maxWidth: "500px" }}>
