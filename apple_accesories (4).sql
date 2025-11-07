@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-11-2025 a las 02:52:10
+-- Tiempo de generación: 07-11-2025 a las 03:03:07
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -61,28 +61,6 @@ INSERT INTO `carrito` (`cod_carrito`, `cod_usuario`, `cod_producto`, `cantidad`,
 (1, '12345678-9', 'ACC01', 2, 127, NULL),
 (2, '12345678-9', 'ACC02', 5, 127, NULL),
 (3, '12345678-9', 'MAC02', 5, 150000, NULL);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `carrito_backup`
---
-
-CREATE TABLE `carrito_backup` (
-  `cod_carrito` int(11) NOT NULL DEFAULT 0,
-  `cod_producto` varchar(10) NOT NULL,
-  `cantidad` tinyint(4) NOT NULL,
-  `precio_unitario` tinyint(4) NOT NULL,
-  `cod_usuario` varchar(10) NOT NULL,
-  `cod_pedido` varchar(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
-
---
--- Volcado de datos para la tabla `carrito_backup`
---
-
-INSERT INTO `carrito_backup` (`cod_carrito`, `cod_producto`, `cantidad`, `precio_unitario`, `cod_usuario`, `cod_pedido`) VALUES
-(1, 'IPA01', 1, 127, '12345678-9', NULL);
 
 -- --------------------------------------------------------
 
