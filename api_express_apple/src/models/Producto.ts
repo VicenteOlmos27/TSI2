@@ -1,5 +1,6 @@
-import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
 import Categoria from "./Categoria";
+import Carrito from "./Carrito";
 
 @Table({tableName: "productos"})
 class Producto extends Model{
@@ -27,6 +28,9 @@ class Producto extends Model{
 
     @BelongsTo(() => Categoria)
     declare categoria: Categoria
+
+    @HasMany(() => Carrito)
+    declare carritos: Carrito[];
 }
 
 export default Producto

@@ -19,11 +19,11 @@ export class Pedido extends Model {
   declare fecha: Date;
 
   @Column({
-    type: DataType.TINYINT,
+    type: DataType.STRING(20),
     allowNull: false,
     field: "estado",
   })
-  declare estado: number;
+  declare estado: string;
 
   @Column({
     type: DataType.INTEGER,
@@ -59,6 +59,27 @@ export class Pedido extends Model {
     field: "fecha_entrega",
   })
   declare fecha_entrega?: Date;
+
+  @Column({
+    type: DataType.TINYINT,
+    allowNull: false,
+    field: "cantidad",
+  })
+  declare cantidad?: number;
+
+  @Column({
+    type: DataType.TINYINT,
+    allowNull: false,
+    field: "anulado",
+  })
+  declare anulado?: number;
+
+  @Column({
+    type: DataType.DATEONLY,
+    allowNull: false,
+    field: "fecha_pedido",
+  })
+  declare fecha_pedido?: Date;
 }
 
 export default Pedido;

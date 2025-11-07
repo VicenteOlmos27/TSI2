@@ -5,6 +5,7 @@ import { crearCliente, login } from "./handlers/clientes";
 import { verificarTokens } from "./middleware/verificarTokens";
 import { borrarPedido, crearPedido, getPedidoById, getPedidosActivos, getPedidosEntregados, registrarEntrega, registrarEnvio } from "./handlers/pedido";
 import { loginAdmin } from "./handlers/usuario";
+import {actualizarCantidad, agregarProductoAlCarrito, eliminarProductoDelCarrito, obtenerCarritoUsuario, vaciarCarrito } from "./handlers/carrito";
 
 const router = Router()
 
@@ -40,5 +41,12 @@ router.post("/pedido/crear", crearPedido) //ENPOINT CREAR PEDIDOS
 router.put("/pedidos/:cod_pedido", registrarEnvio) //ENPOINT REGISTRAR ENVIO
 router.put("/pedidos/:cod_pedido", registrarEntrega) //ENPOINT REGISTRAR ENTREGA
 router.delete("/pedidos/:cod_pedido", borrarPedido) //ENPOINT BORRAR PEDIDO
+
+//ENPOINT DE CARRITO
+router.post('/carrito/agregar', agregarProductoAlCarrito); //ENPOINT PARA AGREGRAR PRODUCTO AL CARRITO
+router.get('/carrito/usuario/:cod_usuario', obtenerCarritoUsuario); //ENPOINT PARA MOSTRAR EL CARRITO DEL USUARIO
+router.put('/carrito/actualizar/:cod_carrito', actualizarCantidad); //ENPOINT PARA ACTUALIZAR LA CANTIDAD
+router.delete('/carrito/eliminar/:cod_carrito', eliminarProductoDelCarrito); //ENPOINT PARA ELIMINAR PRODUCTO DEL CARRITO
+router.delete('/carrito/vaciar', vaciarCarrito); //ENPOINT PARA VACIAR EL CARRITO
 
 export default router

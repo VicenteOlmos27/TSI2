@@ -84,7 +84,7 @@ export const registrarEntrega = async (request: Request, response: Response) => 
   }
 
   pedido.fecha_entrega = new Date();
-  pedido.estado = 0; // ENTREGADO
+  pedido.estado = "NO ENTREGADO"; // ENTREGADO
   await pedido.save();
 
   response.json({ message: "Entrega registrada", data: pedido });

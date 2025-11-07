@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType } from "sequelize-typescript";
+import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
+import Carrito from "./Carrito";
 
 @Table({ tableName: "usuario" })
 export class Usuario extends Model {
@@ -30,6 +31,9 @@ export class Usuario extends Model {
     field: "tipo_usuario", // 0 = cliente, 1 = admin
   })
   declare tipo_usuario: number;
+
+  @HasMany(() => Carrito)
+  declare carritos: Carrito[];
 }
 
 export default Usuario;
