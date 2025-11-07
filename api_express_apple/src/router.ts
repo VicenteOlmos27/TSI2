@@ -7,6 +7,7 @@ import { borrarPedido, crearPedido, getPedidoById, getPedidosActivos, getPedidos
 import { loginAdmin } from "./handlers/usuario";
 import {actualizarCantidad, agregarProductoAlCarrito, eliminarProductoDelCarrito, obtenerCarritoUsuario, vaciarCarrito } from "./handlers/carrito";
 import { crearAjuste, obtenerAjustePorId, obtenerAjustes} from "./handlers/ajustes";
+import { actualizarEstadoSeguimiento, crearSeguimiento, eliminarSeguimiento, obtenerHistorialPedido, obtenerSeguimientoPorId, obtenerSeguimientos } from "./handlers/seguimiento";
 
 const router = Router()
 
@@ -54,5 +55,12 @@ router.delete('/carrito/vaciar', vaciarCarrito); //ENPOINT PARA VACIAR EL CARRIT
 router.post('/ajustes', crearAjuste); //CREAR AJUSTE NEGATIVO O POSITIVO
 router.get('/ajustes/ver', obtenerAjustes); //VER TODOS LOS AJUSTES 
 router.get('/ajustes/:cod_ajuste', obtenerAjustePorId); //FILTRAR PARA VER AJUSTE POR ID
+
+router.post('/seguimiento', crearSeguimiento); //CREAR SEGUIMIENTO
+router.get('/seguimiento/ver', obtenerSeguimientos); //VER SEGUIMIENTO
+router.get('/seguimiento/:nro_seguimiento', obtenerSeguimientoPorId); //VER SEGUIMIENTO SEGUN SU ID
+router.get('/seguimiento/pedido/:cod_pedido/historial', obtenerHistorialPedido); //VER EL HISTORIAL DEL PEDIDO
+router.put('/seguimiento/:nro_seguimiento/estado', actualizarEstadoSeguimiento); //ACTUALIZAR EL ESTADO DEL SEGUIMIENTO
+router.delete('/seguimiento/:nro_seguimiento', eliminarSeguimiento); //ELIMINAR EL SEGUIMIENTO
 
 export default router

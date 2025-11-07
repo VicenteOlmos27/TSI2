@@ -1,5 +1,4 @@
-
-import { Table, Column, Model, DataType } from "sequelize-typescript";
+import { Table, Column, Model, DataType, BeforeCreate } from "sequelize-typescript";
 
 @Table({ tableName: "pedido" })
 export class Pedido extends Model {
@@ -80,6 +79,24 @@ export class Pedido extends Model {
     field: "fecha_pedido",
   })
   declare fecha_pedido?: Date;
+
+  // GENERA CODIGO AUTOMATICAMENTE ANTES DE CREAR
+  @BeforeCreate
+  static async generarCodigo(pedido: Pedido) {
+    if (!pedido.cod_pedido) {
+      const ultimoPedido = await Pedido.findOne({
+        order: [['cod_pedido', 'DESC']]
+      });
+      
+      let nuevoNumero = 1;
+      if (ultimoPedido && ultimoPedido.cod_pedido) {
+        const ultimoNumero = parseInt(ultimoPedido.cod_pedido.replace('PED', ''));
+        nuevoNumero = ultimoNumero + 1;
+      }
+      
+      pedido.cod_pedido = `PED${nuevoNumero.toString().padStart(3, '0')}`;
+    }
+  }
 }
 
 export default Pedido;
