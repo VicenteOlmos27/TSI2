@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-09-2025 a las 06:10:53
+-- Tiempo de generación: 07-11-2025 a las 02:52:10
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -45,11 +45,44 @@ CREATE TABLE `ajustes` (
 --
 
 CREATE TABLE `carrito` (
-  `cod_carrito` varchar(20) NOT NULL,
+  `cod_carrito` int(11) NOT NULL,
+  `cod_usuario` varchar(10) NOT NULL,
+  `cod_producto` varchar(10) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precio_unitario` int(11) NOT NULL,
+  `cod_pedido` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `carrito`
+--
+
+INSERT INTO `carrito` (`cod_carrito`, `cod_usuario`, `cod_producto`, `cantidad`, `precio_unitario`, `cod_pedido`) VALUES
+(1, '12345678-9', 'ACC01', 2, 127, NULL),
+(2, '12345678-9', 'ACC02', 5, 127, NULL),
+(3, '12345678-9', 'MAC02', 5, 150000, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `carrito_backup`
+--
+
+CREATE TABLE `carrito_backup` (
+  `cod_carrito` int(11) NOT NULL DEFAULT 0,
   `cod_producto` varchar(10) NOT NULL,
   `cantidad` tinyint(4) NOT NULL,
-  `precio_unitario` tinyint(4) NOT NULL
+  `precio_unitario` tinyint(4) NOT NULL,
+  `cod_usuario` varchar(10) NOT NULL,
+  `cod_pedido` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `carrito_backup`
+--
+
+INSERT INTO `carrito_backup` (`cod_carrito`, `cod_producto`, `cantidad`, `precio_unitario`, `cod_usuario`, `cod_pedido`) VALUES
+(1, 'IPA01', 1, 127, '12345678-9', NULL);
 
 -- --------------------------------------------------------
 
@@ -69,7 +102,7 @@ CREATE TABLE `categorias` (
 
 INSERT INTO `categorias` (`cod_categoria`, `nombre`, `descripcion`) VALUES
 ('CAT01', 'Mac', 'Computadores Apple: MacBook y iMac'),
-('CAT02', 'MAINCRAA', 'Tablets Apple'),
+('CAT02', 'iPads', 'Tablets Apple'),
 ('CAT03', 'iPhone', 'Smartphones Apple'),
 ('CAT04', 'Accesorios', 'Accesorios oficiales de Apple');
 
@@ -93,20 +126,10 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`cod_usuario`, `nombre_apellido`, `correo`, `direccion`, `telefono`, `contraseña`) VALUES
-('34874653-4', 'Jennifer Reymer', 'Jenny@gmail.com', 'playa ancha', '847020013', '$2b$10$mX5D3L7pGuMcARN7XF/O9OhkRsvi/SY/goa6YsiqUf5aeUq0PtWQG'),
-('75492048-2', 'Juana Bondado', 'juani@gmail.com', 'playa ancha', '948376612', '$2b$10$05eMMnxnR87tJkLzgj3pCO.nN2V6jyrfmTdPxP949Zztv3WcrX0MS');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `detalle_pedido`
---
-
-CREATE TABLE `detalle_pedido` (
-  `cod_usuario` varchar(10) NOT NULL,
-  `cantidad` tinyint(4) NOT NULL,
-  `total_unitario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+('12345678-9', 'JUAN PERE', 'dsfdfs@gmail.com', 'dfvdfv', '342423', '$2b$10$3k1dlqncH/OL3b.FaJV84utgeYGScJLUuOxKaACJPjnENPgJbgTFC'),
+('22046310-9', 'Vicente Olmos', 'vicente@gmail.com', 'Playa Ancha', '910131848', '$2b$10$Y9wRY6aj7052791rlMqC4eR/SuhKeEaf1dsecMwhUVnMQXXzwqKS2'),
+('22141060-2', 'Sebastian Galea', 'sebastian@gmail.com', 'Casa Blanca', '998589993', '$2b$10$PSZTRB/qKI37w1dWxD2I2e3lbqtfyYsQBtewDzxFlNuIwRlVkoUCy'),
+('34874653-4', 'Jennifer Reymer', 'Jenny@gmail.com', 'playa ancha', '847020013', '$2b$10$mX5D3L7pGuMcARN7XF/O9OhkRsvi/SY/goa6YsiqUf5aeUq0PtWQG');
 
 -- --------------------------------------------------------
 
@@ -117,12 +140,15 @@ CREATE TABLE `detalle_pedido` (
 CREATE TABLE `pedido` (
   `cod_pedido` varchar(10) NOT NULL,
   `fecha` date NOT NULL,
-  `estado` tinyint(1) NOT NULL,
+  `estado` varchar(20) NOT NULL,
   `total` int(11) NOT NULL,
   `comprobante` varchar(60) DEFAULT NULL,
   `empresa_envio` varchar(20) DEFAULT NULL,
   `fecha_envio` date DEFAULT NULL,
-  `fecha_entrega` date DEFAULT NULL
+  `fecha_entrega` date DEFAULT NULL,
+  `cantidad` tinyint(4) NOT NULL,
+  `anulado` tinyint(1) NOT NULL,
+  `fecha_pedido` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 -- --------------------------------------------------------
@@ -146,8 +172,14 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`cod_producto`, `nombre`, `descripcion`, `precio_unitario`, `stock`, `imagen`, `cod_categoria`) VALUES
-('PROD01', 'aaaaaa', 'bbbbbb', 21, 1, 'asd.png', 'CAT04'),
-('PROD02', 'dgfd', '324', 32, 32, 'https://PUM.com/imagen.jpg', 'CAT04');
+('ACC01', 'MACBOOK ', 'MACKNOOK 54 PULGADAS', 9999, 2, 'https://PUM.com/imagen.jpg', 'CAT04'),
+('ACC02', 'Audífonos AirPods', 'Audífonos inalámbricos Apple AirPods', 30000, 40, 'https://PUM.com/airpods.jpg', 'CAT04'),
+('IPA01', 'iPad Air', 'Tablet Apple iPad Air de 10.9 pulgadas', 120000, 25, 'https://PUM.com/ipadair.jpg', 'CAT02'),
+('IPA02', 'iPad Pro 11', 'Tablet Apple iPad Pro de 11 pulgadas', 180000, 20, 'https://PUM.com/ipadpro11.jpg', 'CAT02'),
+('IPH01', 'iPhone 14', 'Smartphone Apple iPhone 14', 220000, 30, 'https://PUM.com/iphone14.jpg', 'CAT03'),
+('IPH02', 'iPhone 14 Pro', 'Smartphone Apple iPhone 14 Pro', 270000, 18, 'https://PUM.com/iphone14pro.jpg', 'CAT03'),
+('MAC01', 'MacBook Pro 16', 'Laptop Apple MacBook Pro de 16 pulgadas', 250000, 10, 'https://PUM.com/macbookpro16.jpg', 'CAT01'),
+('MAC02', 'Mac Mini M1', 'Computadora de escritorio Mac Mini con c', 150000, 15, 'https://PUM.com/macmini.jpg', 'CAT01');
 
 -- --------------------------------------------------------
 
@@ -180,8 +212,10 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`cod_usuario`, `nombre_usuario`, `contraseña`, `tipo_usuario`) VALUES
-('34874653-4', 'Jennifer Reymer', '$2b$10$RcdNy0dyf5PUBNhWb5p93OdEjO4AiIEpOVkHOASgyfG4ZeyX8GlI.', 0),
-('75492048-2', 'Juana Bondado', '$2b$10$2P/yAyMI.DQbN8arsyCMBOxWPAsXwXeKH6H8WcVSIPfgKN5k2b3m2', 1);
+('12345678-9', 'JUAN PERE', '$2b$10$//k0MvG8X3T2z62GaJGYmeKk46eCa52klceUkcWZSjCasJ9w/CK7K', 0),
+('22046310-9', 'Vicente Olmos', '$2b$10$hsjRFr3ooMBWG/qx3LrLpOP6IiosIzqwfPgFND1opl.4jUjKhxj8S', 1),
+('22141060-2', 'Sebastian Galea', '$2b$10$4XNG4EU49QOk6M3VEa3i5OahTiUrmSzwHQwwdhd57tegzHhFQvmRq', 1),
+('34874653-4', 'Jennifer Reymer', '$2b$10$RcdNy0dyf5PUBNhWb5p93OdEjO4AiIEpOVkHOASgyfG4ZeyX8GlI.', 0);
 
 --
 -- Índices para tablas volcadas
@@ -200,6 +234,7 @@ ALTER TABLE `ajustes`
 --
 ALTER TABLE `carrito`
   ADD PRIMARY KEY (`cod_carrito`),
+  ADD KEY `cod_usuario` (`cod_usuario`),
   ADD KEY `cod_producto` (`cod_producto`);
 
 --
@@ -212,12 +247,6 @@ ALTER TABLE `categorias`
 -- Indices de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  ADD PRIMARY KEY (`cod_usuario`);
-
---
--- Indices de la tabla `detalle_pedido`
---
-ALTER TABLE `detalle_pedido`
   ADD PRIMARY KEY (`cod_usuario`);
 
 --
@@ -247,6 +276,16 @@ ALTER TABLE `usuario`
   ADD PRIMARY KEY (`cod_usuario`);
 
 --
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `carrito`
+--
+ALTER TABLE `carrito`
+  MODIFY `cod_carrito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- Restricciones para tablas volcadas
 --
 
@@ -261,7 +300,8 @@ ALTER TABLE `ajustes`
 -- Filtros para la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  ADD CONSTRAINT `carrito_ibfk_1` FOREIGN KEY (`cod_producto`) REFERENCES `productos` (`cod_producto`);
+  ADD CONSTRAINT `carrito_ibfk_1` FOREIGN KEY (`cod_usuario`) REFERENCES `usuario` (`cod_usuario`),
+  ADD CONSTRAINT `carrito_ibfk_2` FOREIGN KEY (`cod_producto`) REFERENCES `productos` (`cod_producto`);
 
 --
 -- Filtros para la tabla `productos`
