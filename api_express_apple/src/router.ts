@@ -53,6 +53,6 @@ router.delete('/carrito/vaciar', vaciarCarrito); //ENPOINT PARA VACIAR EL CARRIT
 //ENPOINT DE AJUSTES
 router.post('/ajustes', crearAjuste); //CREAR AJUSTE NEGATIVO O POSITIVO
 router.get('/ajustes/ver', obtenerAjustes); //VER TODOS LOS AJUSTES 
-router.get('/ajustes/:cod_ajuste', obtenerAjustePorId); //FILTRAR AJUSTE POR ID
+router.get('/ajustes/:cod_ajuste', obtenerAjustePorId); //FILTRAR PARA VER AJUSTE POR ID
 
 export default router
