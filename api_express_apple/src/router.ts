@@ -6,6 +6,7 @@ import { verificarTokens } from "./middleware/verificarTokens";
 import { borrarPedido, crearPedido, getPedidoById, getPedidosActivos, getPedidosEntregados, registrarEntrega, registrarEnvio } from "./handlers/pedido";
 import { loginAdmin } from "./handlers/usuario";
 import {actualizarCantidad, agregarProductoAlCarrito, eliminarProductoDelCarrito, obtenerCarritoUsuario, vaciarCarrito } from "./handlers/carrito";
+import { crearAjuste, obtenerAjustePorId, obtenerAjustes} from "./handlers/ajustes";
 
 const router = Router()
 
@@ -48,5 +49,10 @@ router.get('/carrito/usuario/:cod_usuario', obtenerCarritoUsuario); //ENPOINT PA
 router.put('/carrito/actualizar/:cod_carrito', actualizarCantidad); //ENPOINT PARA ACTUALIZAR LA CANTIDAD
 router.delete('/carrito/eliminar/:cod_carrito', eliminarProductoDelCarrito); //ENPOINT PARA ELIMINAR PRODUCTO DEL CARRITO
 router.delete('/carrito/vaciar', vaciarCarrito); //ENPOINT PARA VACIAR EL CARRITO
+
+//ENPOINT DE AJUSTES
+router.post('/ajustes', crearAjuste); //CREAR AJUSTE NEGATIVO O POSITIVO
+router.get('/ajustes/ver', obtenerAjustes); //VER TODOS LOS AJUSTES 
+router.get('/ajustes/:cod_ajuste', obtenerAjustePorId); //FILTRAR AJUSTE POR ID
 
 export default router
