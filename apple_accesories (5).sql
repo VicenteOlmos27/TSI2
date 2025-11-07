@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-11-2025 a las 03:03:07
+-- Tiempo de generación: 07-11-2025 a las 17:35:11
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `ajustes` (
-  `cod_ajuste` varchar(10) NOT NULL,
+  `cod_ajuste` int(11) NOT NULL,
   `cod_pedido` varchar(10) DEFAULT NULL,
   `tipo_ajuste` tinyint(1) NOT NULL,
   `cantidad` tinyint(4) NOT NULL,
@@ -37,6 +37,14 @@ CREATE TABLE `ajustes` (
   `cod_usuario` varchar(10) DEFAULT NULL,
   `cod_producto` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `ajustes`
+--
+
+INSERT INTO `ajustes` (`cod_ajuste`, `cod_pedido`, `tipo_ajuste`, `cantidad`, `descripcion`, `fecha`, `cod_usuario`, `cod_producto`) VALUES
+(1, NULL, 1, 5, 'Compra de inventario adicional', '2025-11-07', '12345678-9', 'IPH01'),
+(2, NULL, 0, 2, 'Producto dañado en almacén', '2025-11-07', '12345678-9', 'IPH01');
 
 -- --------------------------------------------------------
 
@@ -52,15 +60,6 @@ CREATE TABLE `carrito` (
   `precio_unitario` int(11) NOT NULL,
   `cod_pedido` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
-
---
--- Volcado de datos para la tabla `carrito`
---
-
-INSERT INTO `carrito` (`cod_carrito`, `cod_usuario`, `cod_producto`, `cantidad`, `precio_unitario`, `cod_pedido`) VALUES
-(1, '12345678-9', 'ACC01', 2, 127, NULL),
-(2, '12345678-9', 'ACC02', 5, 127, NULL),
-(3, '12345678-9', 'MAC02', 5, 150000, NULL);
 
 -- --------------------------------------------------------
 
@@ -129,6 +128,14 @@ CREATE TABLE `pedido` (
   `fecha_pedido` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
+--
+-- Volcado de datos para la tabla `pedido`
+--
+
+INSERT INTO `pedido` (`cod_pedido`, `fecha`, `estado`, `total`, `comprobante`, `empresa_envio`, `fecha_envio`, `fecha_entrega`, `cantidad`, `anulado`, `fecha_pedido`) VALUES
+('PED001', '2024-01-14', 'pendiente', 299999, 'COMP001', 'DHL Express', '2024-01-15', '2024-01-19', 3, 0, '2024-01-14'),
+('PED002', '2024-01-14', 'pendiente', 56765756, 'COMP002', 'VIXIN OLMIS', '2024-01-15', '2024-01-19', 9, 0, '2024-01-14');
+
 -- --------------------------------------------------------
 
 --
@@ -154,7 +161,7 @@ INSERT INTO `productos` (`cod_producto`, `nombre`, `descripcion`, `precio_unitar
 ('ACC02', 'Audífonos AirPods', 'Audífonos inalámbricos Apple AirPods', 30000, 40, 'https://PUM.com/airpods.jpg', 'CAT04'),
 ('IPA01', 'iPad Air', 'Tablet Apple iPad Air de 10.9 pulgadas', 120000, 25, 'https://PUM.com/ipadair.jpg', 'CAT02'),
 ('IPA02', 'iPad Pro 11', 'Tablet Apple iPad Pro de 11 pulgadas', 180000, 20, 'https://PUM.com/ipadpro11.jpg', 'CAT02'),
-('IPH01', 'iPhone 14', 'Smartphone Apple iPhone 14', 220000, 30, 'https://PUM.com/iphone14.jpg', 'CAT03'),
+('IPH01', 'iPhone 14', 'Smartphone Apple iPhone 14', 220000, 33, 'https://PUM.com/iphone14.jpg', 'CAT03'),
 ('IPH02', 'iPhone 14 Pro', 'Smartphone Apple iPhone 14 Pro', 270000, 18, 'https://PUM.com/iphone14pro.jpg', 'CAT03'),
 ('MAC01', 'MacBook Pro 16', 'Laptop Apple MacBook Pro de 16 pulgadas', 250000, 10, 'https://PUM.com/macbookpro16.jpg', 'CAT01'),
 ('MAC02', 'Mac Mini M1', 'Computadora de escritorio Mac Mini con c', 150000, 15, 'https://PUM.com/macmini.jpg', 'CAT01');
@@ -256,6 +263,12 @@ ALTER TABLE `usuario`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `ajustes`
+--
+ALTER TABLE `ajustes`
+  MODIFY `cod_ajuste` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `carrito`
